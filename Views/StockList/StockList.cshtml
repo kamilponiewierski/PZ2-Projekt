@@ -1,0 +1,37 @@
+@model StockListViewModel
+@{
+    ViewData["Title"] = "Stocks";
+}
+
+<table>
+    <thead>
+        <tr>
+            <th>Ticker</th>
+            <th>Full Name</th>
+            <th>Market</th>
+            <th>⭐</th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.AvailableStocks)
+        {
+            <tr>
+                <td>
+                    <a href="@Url.Action("StockPage", "StockList", new { ticker = item.Ticker })">@item.Ticker</a>
+                </td>
+                <td>@item.FullName</td>
+                <td>@item.Market</td>
+                <td>@(Model.FavouriteStocks.Contains(item) ? "⭐️" : "")</td>
+                <td>
+                    
+                    <form method="post" action="/StockList/Toggle">
+                        <input type="hidden" name="ticker" value="@item.Ticker" />
+                        <button type="submit">@(Model.FavouriteStocks.Contains(item) ? "Unfavourite" : "Favourite")</button>
+                    </form>
+                </td>
+
+            </tr>
+        }
+    </tbody>
+</table> 

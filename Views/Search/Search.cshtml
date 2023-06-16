@@ -1,0 +1,75 @@
+@model lab11.Models.SearchViewModel
+
+@{
+    ViewData["Title"] = "Search Page";
+}
+
+<h1>Search Page</h1>
+
+<form method="post" action="@Url.Action("Search", "Search")">
+    <div>
+        <label for="valueChangePercent">Value Change Percent:</label>
+        <input type="number" id="valueChangePercent" name="ValueChangePercent" value="@Model.SearchModel.ValueChangePercent" />
+    </div>
+
+    <div>
+        <label for="startDate">Start Date:</label>
+        <input type="date" id="startDate" name="StartDate" value="@Model.SearchModel.StartDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+    <div>
+        <label for="endDate">End Date:</label>
+        <input type="date" id="endDate" name="EndDate" value="@Model.SearchModel.EndDate?.ToString("yyyy-MM-dd")" />
+    </div>
+
+
+    <button type="submit">Search</button>
+</form>
+
+<h2>Saved Searches</h2>
+
+@if (Model.FavouriteSearches.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Change</th>
+                <th>View</th>
+                <th>Remove</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var search in Model.FavouriteSearches)
+            {
+                <tr>
+                    <td>@search.StartDate?.ToString("dd.MM.yyyy")</td>
+                    <td>@search.EndDate?.ToString("dd.MM.yyyy")</td>
+                    <td>@search.ValueChangePercent%</td>
+                    <td>
+                        <form action="@Url.Action("Search", "Search")" method="post">
+                            <input type="hidden" name="StartDate" value="@search.StartDate" />
+                            <input type="hidden" name="EndDate" value="@search.EndDate" />
+                            <input type="hidden" name="ValueChangePercent" value="@search.ValueChangePercent" />
+                            <input type="hidden" name="Favourite" value=true/>
+                            <button type="submit">View</button>
+                        </form>
+                    </td>
+                    <td>
+                        <form action="@Url.Action("Favourite", "Search")" method="post">
+                            <input type="hidden" name="startDate" value="@search.StartDate" />
+                            <input type="hidden" name="endDate" value="@search.EndDate" />
+                            <input type="hidden" name="change" value="@search.ValueChangePercent" />
+                            <button type="submit">Remove</button>
+                        </form>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <p>No saved searches found.</p>
+}

@@ -1,0 +1,6 @@
+/* single-row column design */
+th, td { border: 1px solid black;}
+
+#ticker {
+    text-decoration: underline blue;
+}

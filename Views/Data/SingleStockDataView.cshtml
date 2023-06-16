@@ -1,0 +1,31 @@
+@model TableViewModel
+@{
+    ViewData["Title"] = $"Stock Data: {Model.StockTableEntries.First().Ticker}";
+}
+
+<table>
+    <thead>
+        <div>
+            <h2>@Model.StockTableEntries.First().FullName (@Model.StockTableEntries.First().Market)</h2>
+        </div>
+        <tr>
+            <th>Date</th>
+            <th>Highest</th>
+            <th>Lowest</th>
+            <th>Open</th>
+            <th>Close</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model.StockTableEntries)
+        {
+            <tr>
+                <td>@item.Date.ToShortDateString()</td>
+                <td>@item.Highest</td>
+                <td>@item.Lowest</td>
+                <td>@item.Open</td>
+                <td>@item.Close</td>
+            </tr>
+        }
+    </tbody>
+</table> 

@@ -1,0 +1,56 @@
+@model lab11.Models.SearchResultViewModel
+
+@{
+    ViewData["Title"] = "Search Results";
+}
+
+<h2>Search Results</h2>
+<h6>Change of @Model.ValueChangePercent%</h6>
+<h6>@Model.StartDate.ToString("dd.MM.yyyy") - @Model.EndDate.ToString("dd.MM.yyyy")</h6>
+                
+<form method="post" action="/Search/Favourite">
+    <input type="hidden" name="startDate" value="@Model.StartDate" />
+    <input type="hidden" name="endDate" value="@Model.EndDate" />
+    <input type="hidden" name="change" value="@Model.ValueChangePercent" />
+    <button type="submit">@(@Model.isFavorite ? "Unfavourite and close" : "Favourite and close")</button>
+</form>
+
+
+@if (Model.MatchingStocks.Count > 0)
+{
+    <table>
+        <thead>
+            <tr>
+                <th>Stock</th>
+                <th>Change</th>
+                <th>@Model.StartDate.ToString("dd.MM.yyyy")</th>
+                <th>@Model.EndDate.ToString("dd.MM.yyyy")</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var result in Model.MatchingStocks)
+            {
+                <tr>
+                    <td>@result.Stock.FullName</td>
+                    <td class="@(result.StockPerformancePercent >= 0 ? "positive" : "negative")">@result.StockPerformancePercent.ToString("0.00")%</td>
+                    <td>@result.StartPrice</td>
+                    <td>@result.EndPrice</td>
+                </tr>
+            }
+        </tbody>
+    </table>
+} 
+else
+{
+    <p>No such stocks found.</p>
+}
+
+<style>
+    .positive {
+        color: green;
+    }
+
+    .negative {
+        color: red;
+    }
+</style>
